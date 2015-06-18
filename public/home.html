@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Language" content="en" />
+        <meta name="robots" content="all" />
+        <meta name="author" content="IoT_Gateway" />
+        <meta name="Copyright" content="Copyright intel All Rights Reserved." />
+        <title>Gateway Data--Center</title>
+        <link rel="stylesheet" type="text/css" href="styles/pure.css" />
+        <link rel="stylesheet" type="text/css" href="styles/menu.css" />
+        <link rel="stylesheet" type="text/css" href="styles/style.css" />
+    </head>
+
+    <body>
+        <div id="container">
+            <a href="home.html"><img border="0" src="images/banner.jpg" width=100% height="68px"></a>
+            <div id="content">
+		 <table class="pure-table pure-table-bordered" align="center">
+                     <thead>
+		         <tr>
+		             <th>#</th>
+	                     <th>sensor_name</th>				     
+			     <th>sensor_type</th>
+			     <th>sensor_data</th>
+			     <th>time_stamp</th>
+		         </tr>
+                     </thead>	       
+		     <tbody id="table">
+		     </tbody>
+                 </table>	
+		 <br>
+		 <br>
+		 <button id="btn-reg" type="submit" class="pure-button left">Register Sensor</button>
+                 <button id="btn-unreg" type="submit" class="pure-button right">UnRegister Sensor</button>
+		 <br>
+		 <br>
+		 <br>
+		<fieldset>
+	            <legend style="font-size:17px">please input your sensor data</legend>
+                    <input type="text" id="min-data">
+                    <button id="btn-send">Submit</button>
+	        </fieldset>
+            </div>
+        </div>      
+    </body>
+    <script>
+        var request = function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "./data", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                   var rows = JSON.parse(xhr.responseText);
+                   var tableContent = '';
+                   for (var i in rows) {
+                       var row = rows[i];
+                       var str = '<tr><td>'+row[0]+'</td><td>'+row[1]+'</td><td>'
+			         +row[2]+'</td><td>'+row[3]+'</td><td>'+row[4]+'</td></tr>'
+                       tableContent += str;
+                   }
+        
+                   document.getElementById("table").innerHTML = tableContent;
+               }
+           }
+           xhr.send();
+       }
+
+       request();
+       setInterval(request, 3000);	
+
+       document.getElementById("btn-reg").onclick = function() {
+           var xhr = new XMLHttpRequest();
+           xhr.open("GET", "./regisiter", true);
+           xhr.send();
+       }
+
+       document.getElementById("btn-unreg").onclick = function() {
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", "./unregisiter", true);
+          xhr.send();
+      }
+
+     document.getElementById("btn-send").onclick = function() {
+         var value = document.getElementById("min-data").value;
+         var intValue = parseInt(value);
+         if (! (/^[0-9]*.$/).test(value)) {
+           alert("Invalid input: please enter numbers");
+           return;    
+        }
+        if (intValue < 0 || intValue > 100  ) {
+          alert("Out of range: 0~100");
+          return;
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "./send?data=" + value);
+        xhr.send();
+     }
+    </script>
+</html>

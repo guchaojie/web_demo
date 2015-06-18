@@ -1,0 +1,60 @@
+<html>
+<head></head>
+<body>
+<table id="table" border="1">
+</table>
+<button id="btn-reg">Regisiter</button>
+<button id="btn-unreg">Unregisiter</button>
+<input type="text"/ id="min-data">
+<button id="btn-send">Submit</button>
+</body>
+<script>
+  var request = function() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "./data", true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4) {
+        var rows = JSON.parse(xhr.responseText);
+        var tableContent = '';
+        for (var i in rows) {
+          var row = rows[i];
+          var str = '<tr><td>'+row[0]+'</td><td>'+row[1]+'</td></tr>'
+          tableContent += str;
+        }
+        
+        
+        document.getElementById("table").innerHTML = tableContent;
+      }
+    }
+    xhr.send();
+  }
+  request();
+  setInterval(request, 3000);
+
+  document.getElementById("btn-reg").onclick = function() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "./regisiter");
+    xhr.send();
+  }
+
+  document.getElementById("btn-unreg").onclick = function() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "./unregisiter");
+    xhr.send();
+  }
+
+  document.getElementById("btn-send").onclick = function() {
+     var value = document.getElementById("min-data").value;
+     var intValue = parseInt(value);
+     if (intValue < 0 || intValue > 100 || ! /^[0-9]*$/.test(value) ) {
+       alert("Invalid input");
+       return;
+     }
+     var xhr = new XMLHttpRequest();
+     xhr.open("GET", "./send?data=" + value);
+     xhr.send();
+  }
+
+
+</script>
+</html>

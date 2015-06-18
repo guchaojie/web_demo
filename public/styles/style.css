@@ -1,0 +1,155 @@
+body {
+    /*width:960px;*/
+    /*margin:0px auto;*/
+    /*background:#ddd;*/
+    overflow-y:scroll;
+    overflow-y:auto \9; /* IE6 IE7 IE8 */
+    overflow-y:auto \0; /* IE8 IE9 */
+}
+
+hr {
+    width:100%;
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #e5e5e5;
+    margin: 0;
+    padding: 0;
+}
+
+#sidebar{
+    width:15%;
+    height: 100%;
+    float:left;
+    padding-top: 50px;
+}
+
+#content {
+    /* font: normal .8em/1.5em Georgia, Arial, Verdana, Helvetica, sans-serif;
+    font-size:16px;*/
+    float:left;
+    width:85%;
+    *width:80%;
+    min-height: 30em;
+    padding:20px;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: #b7b7b7
+}
+
+
+#footer {
+    clear: both;
+    position: relative;
+    z-index: 10;
+    height: 3em;
+    padding: 1em 0 1em 15%;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: #b7b7b7
+}
+
+#ad{
+    margin-bottom:1em;
+}
+
+#ad td {
+    width: 10%;
+}
+
+#to_date,#from_date{
+    cursor: default;
+    background-color: #FFFFFF;
+    color: #000000;
+    border: 1px solid #CCCCCC;
+}
+
+#text_core_left{
+    width: 200px;
+    float:left;
+}
+
+#label_pkg_name{
+    float:left;
+    margin-right:20px;
+}
+
+#pkg_name{
+    font-family: sans-serif;
+    line-height: normal;
+    -moz-box-sizing: border-box;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 1px 3px #DDDDDD inset;
+    font-size: 0.8em;
+    padding: 0.5em 0.6em;
+    transition: border 0.3s linear 0s;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#addpackage{
+    margin-left: 4px;
+}
+
+#subscribe_table{
+    width:100%;
+    table-layout: fixed;
+}
+
+#subscribe_table tr td {
+    white-space: normal;   
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+
+.fixed_width{
+    width: 200px;
+}
+
+.pChartPicture {
+    border: 0px;
+}
+
+.cvenum, .tb_pkg_name {
+    width:180px;
+    text-align: center;
+    vertical-align: middle;
+}
+.bugurl{
+    width:120px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.hrmargin {
+    margin-top: 0.4em;
+    margin-bottom:1em;
+}
+
+.taglist{
+    width: 600px;
+}
+
+.tips{ 
+    color: #890052;
+    margin-left: 10px;
+}
+
+.success{
+    color: green;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.failed{
+    color: red;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.align_middle tr td{
+    text-align: center;
+    vertical-align: middle;
+}
