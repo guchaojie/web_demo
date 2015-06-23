@@ -3,6 +3,23 @@ var express=require('express'),
     fs = require('fs'),
     path = require('path');
     exec = require('child_process').exec;
+    sqlite3 = require('sqlite3');
+
+sqlite3.verbose();
+var db = new sqlite3.Database('data.db');
+function readAllRows(res) {
+    console.log("Read AllRows");
+    db.all("SELECT device, sensor_name, sensor_type, sensor_data, time_stamp FROM sensor_data", function(err, rows) {
+        console.log(JSON.stringify(rows));	    
+	res.send(JSON.stringify(rows));
+//	rows.forEach(function(row) {
+//	    console.log(row.device + ": " + row.sensor_name);	
+//	});
+    
+    
+    });
+
+}
 
 var app = express();
 
@@ -64,21 +81,15 @@ app.get('/send', function(req, res) {
 
 app.get("/", function(req, res) {
   console.log("New visiter");
-  res.sendFile("/server/public/home.html");
+  res.sendFile("/home/guchaojie/work/ioT/web_demo/public/home.html");
 });
 
 app.get("/data", function(req, res) {
   console.log("data coming");
-  exec('reg-test g',
-     function (error, stdout, stderr) {
-        console.log('stdout: ' + stdout);
-        console.log('stderr: ' + stderr);
-        if (error !== null) {
-           console.log('exec error: ' + error);
-           res.send("{}");
-        } else {
-           res.send(stdout);
-        }
-     });
+  readAllRows(res);
+
 });
+
+//readAllRows();
+
 module.exports = app;
