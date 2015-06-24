@@ -23,7 +23,7 @@ function readAllRows(res) {
 
 function readnuc1Rows(res) {
     console.log("Read NUC1Rows");
-    db.all("SELECT device, sensor_name, sensor_type, sensor_data, time_stamp FROM sensor_data where device = 'nuc1'", function(err, rows) {
+    db.all("SELECT device, sensor_name, sensor_type, sensor_data, time_stamp FROM sensor_data where device = 'nuc1' and sensor_state=1", function(err, rows) {
         console.log(JSON.stringify(rows));	    
 	res.send(JSON.stringify(rows));
 //	rows.forEach(function(row) {
@@ -37,7 +37,7 @@ function readnuc1Rows(res) {
 
 function readnuc2Rows(res) {
     console.log("Read NUC2Rows");
-    db.all("SELECT device, sensor_name, sensor_type, sensor_data, time_stamp FROM sensor_data where device = 'nuc2'", function(err, rows) {
+    db.all("SELECT device, sensor_name, sensor_type, sensor_data, time_stamp FROM sensor_data where device = 'nuc2' and sensor_state=1", function(err, rows) {
         console.log(JSON.stringify(rows));	    
 	res.send(JSON.stringify(rows));
 //	rows.forEach(function(row) {
@@ -129,5 +129,7 @@ app.get("/data2", function(req, res) {
   readnuc2Rows(res);
 
 });
+
+//readnuc1Rows();
 
 module.exports = app;
