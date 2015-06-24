@@ -21,6 +21,34 @@ function readAllRows(res) {
 
 }
 
+function readnuc1Rows(res) {
+    console.log("Read NUC1Rows");
+    db.all("SELECT device, sensor_name, sensor_type, sensor_data, time_stamp FROM sensor_data where device = 'nuc1'", function(err, rows) {
+        console.log(JSON.stringify(rows));	    
+	res.send(JSON.stringify(rows));
+//	rows.forEach(function(row) {
+//	    console.log(row.device + ": " + row.sensor_name);	
+//	});
+    
+    
+    });
+
+}
+
+function readnuc2Rows(res) {
+    console.log("Read NUC2Rows");
+    db.all("SELECT device, sensor_name, sensor_type, sensor_data, time_stamp FROM sensor_data where device = 'nuc2'", function(err, rows) {
+        console.log(JSON.stringify(rows));	    
+	res.send(JSON.stringify(rows));
+//	rows.forEach(function(row) {
+//	    console.log(row.device + ": " + row.sensor_name);	
+//	});
+    
+    
+    });
+
+}
+
 var app = express();
 
 // All your express server code goes here.
@@ -90,6 +118,16 @@ app.get("/data", function(req, res) {
 
 });
 
-//readAllRows();
+app.get("/data1", function(req, res) {
+  console.log("data1 coming");
+  readnuc1Rows(res);
+
+});
+
+app.get("/data2", function(req, res) {
+  console.log("data2 coming");
+  readnuc2Rows(res);
+
+});
 
 module.exports = app;

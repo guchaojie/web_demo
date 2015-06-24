@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Language" content="en" />
+        <meta name="robots" content="all" />
+        <meta name="author" content="IoT_Gateway" />
+        <meta name="Copyright" content="Copyright intel All Rights Reserved." />
+        <title>Gateway Data--NUC1</title>
+        <link rel="stylesheet" type="text/css" href="styles/pure.css" />
+        <link rel="stylesheet" type="text/css" href="styles/menu.css" />
+        <link rel="stylesheet" type="text/css" href="styles/style.css" />
+	<script src="../Chart.js/Chart.js"></script>
+	<script src="../Chart.js/Chart.js"></script>
+	<script src="../ExplorerCanvas/excanvas.js"></script>
+    </head>
+
+    <body>
+        <div id="container">
+            <a href="home.html"><img border="0" src="images/banner.jpg" width=100% height="68px"></a>
+        <div id='cssmenu'>
+           <ul>
+             <li><a href='home.html'><span>Home</span></a></li>
+             <li class='has-sub'><a href='#'><span>Documentation</span></a>
+                <ul>
+                    <li><a href='advantages.html'><span>Advantages</span></a></li>
+                    <li><a href='install.html'><span>Install</span></a></li>
+                    <li><a href='faq.html'><span>FAQ</span></a></li>
+                </ul>
+             </li>
+             <li><a href='download.html'><span>Download</span></a></li>
+             <li class='last'><a href='about.html'><span>About</span></a></li>
+           </ul>
+          </div>
+            <div id='sidebar'>
+                <div class="pure-menu pure-menu-open">
+                    <ul>
+                        <li><a href="home.html">Overview</a></li>
+                        <li><a href="nuc1.html">NUC 1</a></li>
+                        <li><a href="nuc2.html">NUC 2</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="content">
+		 <table class="pure-table pure-table-bordered" align="center">
+                     <thead>
+		         <tr>
+		             <th>#</th>
+	                     <th>sensor_name</th>				     
+			     <th>sensor_type</th>
+			     <th>sensor_data</th>
+			     <th>time_stamp</th>
+		         </tr>
+                     </thead>	       
+		     <tbody id="table">
+		     </tbody>
+                 </table>	
+		 <br>
+		<div>
+		<canvas id="canvas" width="600" height="450" align="center"></canvas>
+		<br>
+		<button id="randomizeData">Randomize Data</button>
+                </div>
+            </div>
+        </div>      
+        <div id="footer">
+          <a href="home.html" >Home</a> | <a href="#">About Sensor Framework</a> <br />
+          Copyright © 2015 The Sensor Framework Team
+        </div>
+    </body>
+    <script>
+        var request = function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "./data1", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                   var rows = JSON.parse(xhr.responseText);
+                   var tableContent = '';
+                   for (var i in rows) {
+                       var row = rows[i];
+                       var str = '<tr><td>'+row.device+'</td><td>'+row.sensor_name+'</td><td>'
+			         +row.sensor_type+'</td><td>'+row.sensor_data+'</td><td>'+row.time_stamp+'</td></tr>'
+                       tableContent += str;
+                   }
+        
+                   document.getElementById("table").innerHTML = tableContent;
+               }
+           }
+           xhr.send();
+       }
+
+       request();
+       setInterval(request, 3000);	
+
+       document.getElementById("btn-reg").onclick = function() {
+           var xhr = new XMLHttpRequest();
+           xhr.open("GET", "./regisiter", true);
+           xhr.send();
+       }
+
+       document.getElementById("btn-unreg").onclick = function() {
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", "./unregisiter", true);
+          xhr.send();
+      }
+
+     document.getElementById("btn-send").onclick = function() {
+         var value = document.getElementById("min-data").value;
+         var intValue = parseInt(value);
+         if (! (/^[0-9]*.$/).test(value)) {
+           alert("Invalid input: please enter numbers");
+           return;    
+        }
+        if (intValue < 0 || intValue > 100  ) {
+          alert("Out of range: 0~100");
+          return;
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "./send?data=" + value);
+        xhr.send();
+     }
+
+     var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
+     var randomColorFactor = function(){ return Math.round(Math.random()*255)};
+     var lineChartData = { labels : ["January","February","March","April","May","June","July"],
+	                   datasets : [
+			     { 
+			      label: "My First dataset",
+			      fillColor : "rgba(220,220,220,0.2)",
+			      strokeColor : "rgba(220,220,220,1)",
+			      pointColor : "rgba(220,220,220,1)",
+			      pointStrokeColor : "#fff",
+			      pointHighlightFill : "#fff",
+			      pointHighlightStroke : "rgba(220,220,220,1)",
+			      data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),
+				      randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+			     },
+			     { 
+			       label: "My Second dataset",
+			       fillColor : "rgba(151,187,205,0.2)",
+			       strokeColor : "rgba(151,187,205,1)",
+			       pointColor : "rgba(151,187,205,1)",
+			       pointStrokeColor : "#fff",
+			       pointHighlightFill : "#fff",
+			       pointHighlightStroke : "rgba(151,187,205,1)",
+			       data : [randomColorFactor(),randomColorFactor(),randomColorFactor(),randomColorFactor(),
+				       randomColorFactor(),randomColorFactor(),randomColorFactor()]
+			     } 
+			   ]
+                        };
+
+    window.onload = function(){
+	    var ctx = document.getElementById("canvas").getContext("2d");
+	    window.myLine = new Chart(ctx).Line(lineChartData, { responsive: true });
+    }
+    </script>
+</html>
