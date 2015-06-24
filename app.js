@@ -9,7 +9,7 @@ sqlite3.verbose();
 var db = new sqlite3.Database('data.db');
 function readAllRows(res) {
     console.log("Read AllRows");
-    db.all("SELECT device, sensor_name, sensor_type, sensor_data, time_stamp FROM sensor_data", function(err, rows) {
+    db.all("SELECT device, sensor_name, sensor_type, sensor_data, time_stamp FROM sensor_data where sensor_state=1", function(err, rows) {
         console.log(JSON.stringify(rows));	    
 	res.send(JSON.stringify(rows));
 //	rows.forEach(function(row) {
