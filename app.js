@@ -77,6 +77,34 @@ function readmisc1Rows(res) {
 
 }
 
+function readtempRows(res) {
+    console.log("Read LightRows");
+    db.all("SELECT sensor_data, time_stamp FROM sensor_history_data where device = 'nuc2' and sensor_type= 'Temperature' and sensor_state=1 order by time_stamp desc limit 7", function(err, rows) {
+        console.log(JSON.stringify(rows));	    
+	res.send(JSON.stringify(rows));
+//	rows.forEach(function(row) {
+//	    console.log(row.device + ": " + row.sensor_name);	
+//	});
+    
+    
+    });
+
+}
+
+function readmisc2Rows(res) {
+    console.log("Read Misc2Rows");
+    db.all("SELECT sensor_data, time_stamp FROM sensor_history_data where device = 'nuc2' and sensor_type= 'Misc' and sensor_state=1 order by time_stamp desc limit 7", function(err, rows) {
+        console.log(JSON.stringify(rows));	    
+        res.send(JSON.stringify(rows));
+//	rows.forEach(function(row) {
+//	    console.log(row.device + ": " + row.sensor_name);	
+//	});
+    
+    
+    });
+
+}
+
 var app = express();
 
 // All your express server code goes here.
@@ -170,6 +198,17 @@ app.get("/datamisc1", function(req, res) {
 
 });
 
+app.get("/datatemp", function(req, res) {
+  console.log("datatemp coming");
+  readtempRows(res);
+
+});
+
+app.get("/datamisc2", function(req, res) {
+  console.log("datamisc1 coming");
+  readmisc2Rows(res);
+
+});
 //readmisc1Rows();
 
 module.exports = app;

@@ -57,7 +57,12 @@
                  </table>	
 		 <br>
 		<div>
-		  <canvas id="canvas" width="150" height="50"></canvas>
+                  <h4 align ="center">Temperature Sensor Analysis Chart</h4>
+		  <canvas id="canvas" width=150" height="50"></canvas>
+		  <br />
+                  <h4 align ="center">Misc Sensor Analysis Chart</h4>
+                  <br />
+                  <canvas id="canvas1" width=150" height="50"></canvas>
 	       </div>
             </div>
         </div>      
@@ -67,6 +72,11 @@
         </div>
     </body>
     <script>
+        var temp_time = new Array(7);
+        var temp_data = new Array(7);
+        var misc_time = new Array(7);
+        var misc_data = new Array(7);
+
         var request = function() {
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "./data2", true);
@@ -91,9 +101,22 @@
        setInterval(request, 3000);	
 
        
-     var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
-     var randomColorFactor = function(){ return Math.round(Math.random()*255)};
-     var lineChartData = { labels : ["January","February","March","April","May","June","July"],
+       var request1 = function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "./datatemp", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                   var rows = JSON.parse(xhr.responseText);
+                   for (var i in rows) {
+                       var row = rows[i];
+                       temp_time[i] = row.time_stamp;
+		       temp_data[i] = row.sensor_data;
+
+                   }
+
+		   if (temp_time[0]) {
+		      var lineChartData1 = { labels : [temp_time[6],temp_time[5],temp_time[4],
+			                              temp_time[3],temp_time[2],temp_time[1],temp_time[0]],
 	                   datasets : [
 			     { 
 			      label: "My First dataset",
@@ -103,9 +126,43 @@
 			      pointStrokeColor : "#fff",
 			      pointHighlightFill : "#fff",
 			      pointHighlightStroke : "rgba(220,220,220,1)",
-			      data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),
-				      randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-			     },
+			      data : [temp_data[6],temp_data[5],temp_data[4],
+			              temp_data[3],temp_data[2],temp_data[1],temp_data[0]]
+			     }
+			   ]
+                        };
+
+	                   var ctx = document.getElementById("canvas").getContext("2d");
+	                   window.myLine = new Chart(ctx).Line(lineChartData1, { responsive: true });
+		   }
+        
+                   
+
+               }
+           }
+           xhr.send();
+       }
+
+       request1();
+       setInterval(request1, 3000);
+
+       var request2 = function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "./datamisc2", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                   var rows = JSON.parse(xhr.responseText);
+                   for (var i in rows) {
+                       var row = rows[i];
+                       misc_time[i] = row.time_stamp;
+		       misc_data[i] = row.sensor_data;
+
+                   }
+
+		   if (misc_time[0]) {
+		      var lineChartData = { labels : [misc_time[6],misc_time[5],misc_time[4],
+			                              misc_time[3],misc_time[2],misc_time[1],misc_time[0]],
+	                   datasets : [
 			     { 
 			       label: "My Second dataset",
 			       fillColor : "rgba(151,187,205,0.2)",
@@ -114,16 +171,24 @@
 			       pointStrokeColor : "#fff",
 			       pointHighlightFill : "#fff",
 			       pointHighlightStroke : "rgba(151,187,205,1)",
-			       data : [randomColorFactor(),randomColorFactor(),randomColorFactor(),randomColorFactor(),
-				       randomColorFactor(),randomColorFactor(),randomColorFactor()]
-			     } 
+			      data : [misc_data[6],misc_data[5],misc_data[4],
+			              misc_data[3],misc_data[2],misc_data[1],misc_data[0]]
+			     }
 			   ]
                         };
 
-    window.onload = function(){
-	    var ctx = document.getElementById("canvas").getContext("2d");
-	    window.myLine = new Chart(ctx).Line(lineChartData, { responsive: true });
-    }
+	                   var ctx = document.getElementById("canvas1").getContext("2d");
+	                   window.myLine = new Chart(ctx).Line(lineChartData, { responsive: true });
+		   }
+        
+                   
 
+               }
+           }
+           xhr.send();
+       }
+
+       request2();
+       setInterval(request2, 3000);
     </script>
 </html>
