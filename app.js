@@ -165,7 +165,7 @@ app.get('/send', function(req, res) {
 
 app.get("/", function(req, res) {
   console.log("New visiter");
-  res.sendFile("/home/guchaojie/work/ioT/web_demo/public/home.html");
+  res.sendFile(path.join(__dirname, 'public/', 'home.html'));
 });
 
 app.get("/data", function(req, res) {
