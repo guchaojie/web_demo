@@ -55,45 +55,15 @@
 		     <tbody id="table">
 		     </tbody>
                  </table>	
-		 <br>
+		 <br />
 		<div>
+		<h4 align ="center">Light Sensor Analysis Chart</h4>
 		<canvas id="canvas" width=150" height="50"></canvas>
+		<br />
+                <h4 align ="center">Misc Sensor Analysis Chart</h4>
+                <br />
+                <canvas id="canvas1" width=150" height="50"></canvas>
 	        </div>
-<script>
-var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
-     var randomColorFactor = function(){ return Math.round(Math.random()*100)};
-     var lineChartData = { labels : ["January","February","March","April","May","June"],
-	                   datasets : [
-			     { 
-			      label: "My First dataset",
-			      fillColor : "rgba(220,220,220,0.2)",
-			      strokeColor : "rgba(220,220,220,1)",
-			      pointColor : "rgba(220,220,220,1)",
-			      pointStrokeColor : "#fff",
-			      pointHighlightFill : "#fff",
-			      pointHighlightStroke : "rgba(220,220,220,1)",
-			      data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),
-				      randomScalingFactor(),randomScalingFactor()]
-			     },
-			     { 
-			       label: "My Second dataset",
-			       fillColor : "rgba(151,187,205,0.2)",
-			       strokeColor : "rgba(151,187,205,1)",
-			       pointColor : "rgba(151,187,205,1)",
-			       pointStrokeColor : "#fff",
-			       pointHighlightFill : "#fff",
-			       pointHighlightStroke : "rgba(151,187,205,1)",
-			       data : [randomColorFactor(),randomColorFactor(),randomColorFactor(),randomColorFactor(),
-				       randomColorFactor(),randomColorFactor()]
-			     } 
-			   ]
-                        };
-
-    window.onload = function(){
-	    var ctx = document.getElementById("canvas").getContext("2d");
-	    window.myLine = new Chart(ctx).Line(lineChartData, { responsive: true });
-    }
-</script>
             </div>
         </div>      
         <div id="footer">
@@ -102,6 +72,11 @@ var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
         </div>
     </body>
     <script>
+        var light_time = new Array(7);
+        var light_data = new Array(7);
+        var misc_time = new Array(7);
+        var misc_data = new Array(7);
+
         var request = function() {
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "./data1", true);
@@ -114,8 +89,8 @@ var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
                        var str = '<tr><td>'+row.device+'</td><td>'+row.sensor_name+'</td><td>'
 			         +row.sensor_type+'</td><td>'+row.sensor_data+'</td><td>'+row.time_stamp+'</td></tr>'
                        tableContent += str;
+		      
                    }
-        
                    document.getElementById("table").innerHTML = tableContent;
                }
            }
@@ -125,33 +100,94 @@ var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
        request();
        setInterval(request, 3000);	
 
-       document.getElementById("btn-reg").onclick = function() {
-           var xhr = new XMLHttpRequest();
-           xhr.open("GET", "./regisiter", true);
+       var request1 = function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "./datalight", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                   var rows = JSON.parse(xhr.responseText);
+                   for (var i in rows) {
+                       var row = rows[i];
+                       light_time[i] = row.time_stamp;
+		       light_data[i] = row.sensor_data;
+
+                   }
+
+		   if (light_time[0]) {
+		      var lineChartData1 = { labels : [light_time[0],light_time[1],light_time[2],
+			                              light_time[3],light_time[4],light_time[5],light_time[6]],
+	                   datasets : [
+			     { 
+			      label: "My First dataset",
+			      fillColor : "rgba(220,220,220,0.2)",
+			      strokeColor : "rgba(220,220,220,1)",
+			      pointColor : "rgba(220,220,220,1)",
+			      pointStrokeColor : "#fff",
+			      pointHighlightFill : "#fff",
+			      pointHighlightStroke : "rgba(220,220,220,1)",
+			      data : [light_data[0],light_data[1],light_data[2],
+			              light_data[3],light_data[4],light_data[5],light_data[6]]
+			     }
+			   ]
+                        };
+
+	                   var ctx = document.getElementById("canvas").getContext("2d");
+	                   window.myLine = new Chart(ctx).Line(lineChartData1, { responsive: true });
+		   }
+        
+                   
+
+               }
+           }
            xhr.send();
        }
 
-       document.getElementById("btn-unreg").onclick = function() {
-          var xhr = new XMLHttpRequest();
-          xhr.open("GET", "./unregisiter", true);
-          xhr.send();
-      }
+       request1();
+       setInterval(request1, 3000);
 
-     document.getElementById("btn-send").onclick = function() {
-         var value = document.getElementById("min-data").value;
-         var intValue = parseInt(value);
-         if (! (/^[0-9]*.$/).test(value)) {
-           alert("Invalid input: please enter numbers");
-           return;    
-        }
-        if (intValue < 0 || intValue > 100  ) {
-          alert("Out of range: 0~100");
-          return;
-        }
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "./send?data=" + value);
-        xhr.send();
-     }
+       var request2 = function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "./datamisc1", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                   var rows = JSON.parse(xhr.responseText);
+                   for (var i in rows) {
+                       var row = rows[i];
+                       misc_time[i] = row.time_stamp;
+		       misc_data[i] = row.sensor_data;
 
-         </script>
+                   }
+
+		   if (misc_time[0]) {
+		      var lineChartData = { labels : [misc_time[0],misc_time[1],misc_time[2],
+			                              misc_time[3],misc_time[4],misc_time[5],misc_time[6]],
+	                   datasets : [
+			     { 
+			       label: "My Second dataset",
+			       fillColor : "rgba(151,187,205,0.2)",
+			       strokeColor : "rgba(151,187,205,1)",
+			       pointColor : "rgba(151,187,205,1)",
+			       pointStrokeColor : "#fff",
+			       pointHighlightFill : "#fff",
+			       pointHighlightStroke : "rgba(151,187,205,1)",
+			      data : [misc_data[0],misc_data[1],misc_data[2],
+			              misc_data[3],misc_data[4],misc_data[5],misc_data[6]]
+			     }
+			   ]
+                        };
+
+	                   var ctx = document.getElementById("canvas1").getContext("2d");
+	                   window.myLine = new Chart(ctx).Line(lineChartData, { responsive: true });
+		   }
+        
+                   
+
+               }
+           }
+           xhr.send();
+       }
+
+       request2();
+       setInterval(request2, 3000);
+   </script>
 </html>
