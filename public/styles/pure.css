@@ -951,10 +951,10 @@ a:focus {
 
 .right {
    position: absolute;
-   right: 550px;
+   right: -300px;
 }
 
 .left {
    position: absolute;
-   left: 350px;
+   left: 250px;
 }

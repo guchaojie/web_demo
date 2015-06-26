@@ -10,6 +10,8 @@
         <link rel="stylesheet" type="text/css" href="styles/pure.css" />
         <link rel="stylesheet" type="text/css" href="styles/menu.css" />
         <link rel="stylesheet" type="text/css" href="styles/style.css" />
+        <link rel="stylesheet" type="text/css" href="styles/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="styles/sb-admin-2.css" />
 	<script src="Chart.js/Chart.js"></script>
     </head>
 
@@ -41,6 +43,53 @@
             </div>
 
             <div id="content">
+                 
+              <div class="row">
+                <div class="col-lg-3 col-md-6 left">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-comments fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div id="nuc1" class="huge">26</div>
+                                    <div>Sensor Running!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="nuc1.html">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details in PDX</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 right">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-shopping-cart fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div id="nuc2" class="huge">124</div>
+                                    <div>Sensor Running!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="nuc2.html">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details in LAX</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+		</div>
 		 <table class="pure-table pure-table-bordered" align="center">
 		     <caption>All the Sensor Status Overview in Network</caption>
                      <thead>
@@ -72,12 +121,16 @@
                    var rows = JSON.parse(xhr.responseText);
                    var tableContent = '';
 		   var str;
+		   var number1 = 0;
+		   var number2 = 0;
                    for (var i in rows) {
                        var row = rows[i];
 		       if (row.device == "nuc1") {
 		          row.device = "PDX";
+			  number1++;
 		       } else {
 		          row.device = "LAX";
+			  number2++;
 		       }
 		       if (i % 2) {
 		         str = '<tr class="pure-table-odd"><td>'+row.device+'</td><td>'+row.sensor_name+'</td><td>'
@@ -92,6 +145,8 @@
                    }
         
                    document.getElementById("table").innerHTML = tableContent;
+                   document.getElementById("nuc1").innerHTML = number1;
+                   document.getElementById("nuc2").innerHTML = number2;
                }
            }
            xhr.send();
