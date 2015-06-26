@@ -15,7 +15,7 @@
 
     <body>
         <div id="container">
-            <a href="home.html"><img border="0" src="images/banner.jpg" width=100% height="68px"></a>
+            <a href="home.html"><img border="0" src="images/banner1.jpg" width=100% height="83px"></a>
         <div id='cssmenu'>
            <ul>
              <li><a href='home.html'><span>Home</span></a></li>
@@ -34,8 +34,8 @@
                 <div class="pure-menu pure-menu-open">
                     <ul>
                         <li><a href="home.html">Overview</a></li>
-                        <li><a href="nuc1.html">NUC 1</a></li>
-                        <li><a href="nuc2.html">NUC 2</a></li>
+                        <li><a href="nuc1.html">PDX</a></li>
+                        <li><a href="nuc2.html">LAX</a></li>
                     </ul>
                 </div>
             </div>
@@ -71,10 +71,23 @@
                 if (xhr.readyState == 4) {
                    var rows = JSON.parse(xhr.responseText);
                    var tableContent = '';
+		   var str;
                    for (var i in rows) {
                        var row = rows[i];
-                       var str = '<tr><td>'+row.device+'</td><td>'+row.sensor_name+'</td><td>'
+		       if (row.device == "nuc1") {
+		          row.device = "PDX";
+		       } else {
+		          row.device = "LAX";
+		       }
+		       if (i % 2) {
+		         str = '<tr class="pure-table-odd"><td>'+row.device+'</td><td>'+row.sensor_name+'</td><td>'
+			         +row.sensor_type+'</td><td>'+row.sensor_data+'</td><td>'+row.time_stamp+'</td></tr>' 
+		       
+		       } else {
+		          str = '<tr><td>'+row.device+'</td><td>'+row.sensor_name+'</td><td>'
 			         +row.sensor_type+'</td><td>'+row.sensor_data+'</td><td>'+row.time_stamp+'</td></tr>'
+		       }
+                       
                        tableContent += str;
                    }
         

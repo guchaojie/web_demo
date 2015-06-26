@@ -6,7 +6,7 @@
         <meta name="robots" content="all" />
         <meta name="author" content="IoT_Gateway" />
         <meta name="Copyright" content="Copyright intel All Rights Reserved." />
-        <title>Gateway Data--NUC2</title>
+        <title>Gateway Data--LAX</title>
         <link rel="stylesheet" type="text/css" href="styles/pure.css" />
         <link rel="stylesheet" type="text/css" href="styles/menu.css" />
         <link rel="stylesheet" type="text/css" href="styles/style.css" />
@@ -15,7 +15,7 @@
 
     <body>
         <div id="container">
-            <a href="home.html"><img border="0" src="images/banner.jpg" width=100% height="68px"></a>
+            <a href="home.html"><img border="0" src="images/banner1.jpg" width=100% height="83px"></a>
         <div id='cssmenu'>
            <ul>
              <li><a href='home.html'><span>Home</span></a></li>
@@ -34,15 +34,15 @@
                 <div class="pure-menu pure-menu-open">
                     <ul>
                         <li><a href="home.html">Overview</a></li>
-                        <li><a href="nuc1.html">NUC 1</a></li>
-                        <li><a href="nuc2.html">NUC 2</a></li>
+                        <li><a href="nuc1.html">PDX</a></li>
+                        <li><a href="nuc2.html">LAX</a></li>
                     </ul>
                 </div>
             </div>
 
             <div id="content">
 		 <table class="pure-table pure-table-bordered" align="center">
-                    <caption>Nuc2 Sensor Status Details</caption>
+                    <caption>LAX Sensor Status Details</caption>
                      <thead>
 		         <tr>
 		             <th>#</th>
@@ -78,14 +78,26 @@
         var misc_data = new Array(20);
 
         var misc_thredhold = new Array(20);
-	for (var i = 0; i < misc_thredhold.length; i++) {
-	    misc_thredhold[i] = 40;
+        for (var i = 0; i < misc_thredhold.length; i++) {
+	    misc_thredhold[i] = 80;
 	
 	}
 
+        var misc_thredhold1 = new Array(20);
+	for (var i = 0; i < misc_thredhold1.length; i++) {
+	    misc_thredhold1[i] = 30;
+	
+	}
+ 
         var temp_thredhold = new Array(20);
         for (var i = 0; i < temp_thredhold.length; i++) {
 	    temp_thredhold[i] = 36;
+	
+	}
+
+        var temp_thredhold1 = new Array(20);
+        for (var i = 0; i < temp_thredhold1.length; i++) {
+	    temp_thredhold1[i] = 35;
 	
 	}
         Chart.defaults.global.animation=false;
@@ -97,11 +109,20 @@
                 if (xhr.readyState == 4) {
                    var rows = JSON.parse(xhr.responseText);
                    var tableContent = '';
+		   var str;
                    for (var i in rows) {
                        var row = rows[i];
-                       var str = '<tr><td>'+row.device+'</td><td>'+row.sensor_name+'</td><td>'
+		       row.device = "LAX";
+                       if (i % 2) {
+		         str = '<tr class="pure-table-odd"><td>'+row.device+'</td><td>'+row.sensor_name+'</td><td>'
+			         +row.sensor_type+'</td><td>'+row.sensor_data+'</td><td>'+row.time_stamp+'</td></tr>' 
+		       
+		       } else {
+		          str = '<tr><td>'+row.device+'</td><td>'+row.sensor_name+'</td><td>'
 			         +row.sensor_type+'</td><td>'+row.sensor_data+'</td><td>'+row.time_stamp+'</td></tr>'
+		       }                       		      
                        tableContent += str;
+ 
                    }
         
                    document.getElementById("table").innerHTML = tableContent;
@@ -135,13 +156,24 @@
                             {
 			     label: "My First dataset",
 			     fillColor : "rgba(220,220,220,0.2)",
-			     strokeColor : "rgba(192,0,0,0.2)",
-                             pointColor : "rgba(192,0,0,0.2)",
+			     strokeColor : "rgba(196,0,0,0.2)",
+                             pointColor : "rgba(196,0,0,0.2)",
 			     pointStrokeColor : "#fff",
 			     pointHighlightFill : "#fff",
 			     pointHighlightStroke : "rgba(220,220,220,1)",
 			     data : temp_thredhold 
 			    },
+                            {
+			     label: "My Third dataset",
+			     fillColor : "rgba(220,220,220,0.5)",
+			     strokeColor : "rgba(255,102,0,0.5)",
+                             pointColor : "rgba(255,102,0,0.5)",
+			     pointStrokeColor : "#fff",
+			     pointHighlightFill : "#fff",
+			     pointHighlightStroke : "rgba(220,220,220,1)",
+			     data : temp_thredhold1 
+			    },
+ 
 			     { 
 			      label: "My Second dataset",
                               fillColor : "rgba(50,161,151,0.2)",
@@ -196,6 +228,16 @@
 			     pointHighlightFill : "#fff",
 			     pointHighlightStroke : "rgba(220,220,220,1)",
 			     data : misc_thredhold 
+			    },
+                            {
+			     label: "My Third dataset",
+			     fillColor : "rgba(220,220,220,0.4)",
+			     strokeColor : "rgba(255,102,0,0.4)",
+                             pointColor : "rgba(255,102,0,0.4)",
+			     pointStrokeColor : "#fff",
+			     pointHighlightFill : "#fff",
+			     pointHighlightStroke : "rgba(220,220,220,1)",
+			     data : misc_thredhold1 
 			    },
 			     { 
 			       label: "My Second dataset",
