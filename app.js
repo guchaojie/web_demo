@@ -65,7 +65,7 @@ function readlightRows(res) {
 
 function readmisc1Rows(res) {
     console.log("Read Misc1Rows");
-    db.all("SELECT sensor_data, time_stamp FROM sensor_history_data where device = 'nuc1' and sensor_type= 'Misc' and sensor_state=1 order by time_stamp desc limit 20", function(err, rows) {
+    db.all("SELECT sensor_type, sensor_data, time_stamp FROM sensor_history_data where device = 'nuc1' and sensor_type= 'Misc' and sensor_state=1 order by time_stamp desc limit 20", function(err, rows) {
         console.log(JSON.stringify(rows));	    
         res.send(JSON.stringify(rows));
 //	rows.forEach(function(row) {
@@ -93,7 +93,7 @@ function readtempRows(res) {
 
 function readmisc2Rows(res) {
     console.log("Read Misc2Rows");
-    db.all("SELECT sensor_data, time_stamp FROM sensor_history_data where device = 'nuc2' and sensor_type= 'Misc' and sensor_state=1 order by time_stamp desc limit 20", function(err, rows) {
+    db.all("SELECT sensor_type, sensor_data, time_stamp FROM sensor_history_data where device = 'nuc2' and sensor_type= 'Misc' and sensor_state=1 order by time_stamp desc limit 20", function(err, rows) {
         console.log(JSON.stringify(rows));	    
         res.send(JSON.stringify(rows));
 //	rows.forEach(function(row) {

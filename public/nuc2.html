@@ -60,7 +60,7 @@
                   <h4 align ="center">Temperature Sensor Analysis Chart</h4>
 		  <canvas id="canvas" width=150" height="50"></canvas>
 		  <br />
-                  <h4 align ="center">Misc Sensor Analysis Chart</h4>
+                  <h4 id="misc" align ="center"></h4>
                   <br />
                   <canvas id="canvas1" width=150" height="50"></canvas>
 	       </div>
@@ -212,10 +212,12 @@
                        misc_time[i] = row.time_stamp;
                        misc_time[i] = misc_time[i].match(/\d+:\d+$/);
 		       misc_data[i] = row.sensor_data;
+                       if (row.sensor_type == "Misc") {
+		           flag = 1;
+		       }
 
                    }
 
-		   if (misc_time[0]) {
 		      var lineChartData = { 
 			   labels: misc_time.reverse(),						      
 	                   datasets : [
@@ -252,10 +254,11 @@
 			   ]
                         };
 
-	                   var ctx = document.getElementById("canvas1").getContext("2d");
+	                if (flag) {
+			   var ctx = document.getElementById("canvas1").getContext("2d");
 	                   window.myLine = new Chart(ctx).Line(lineChartData, { responsive: true });
-		   }
-        
+                           document.getElementById("misc").innerHTML = "Virtual Sensor Analysis Chart";
+			}        
                    
 
                }
